@@ -9,28 +9,25 @@
       </div>
     </div>
 
-    <g-link 
-      :to="item.node.path"
-      v-for="item in $page.posts.edges" 
-      :key="item.node.id"
-      class="journal-post"
-    >
+    <g-link :to="'journals/' + item.node.id"
+            v-for="item in $page.posts.edges"
+            :key="item.node.id"
+            class="journal-post">
       <div class="container journal">
         <h2 class="journal-title">{{ item.node.title }}</h2>
         <p class="journal-excerpt">{{ item.node.excerpt }}</p>
       </div>
     </g-link>
-      
+
   </Layout>
 </template>
 
 <page-query>
 query Journal {
-	posts: allJournalPost {
+	posts: allStrapiJournal {
     edges {
       node {
         id
-        path
         title
         excerpt
       }
@@ -84,6 +81,9 @@ export default {
   color: var(--color-contrast);
 }
 .journal-excerpt {
+  word-wrap: break-word;
+
+  word-break: normal;
   color: var(--color-contrast-1);
 }
 

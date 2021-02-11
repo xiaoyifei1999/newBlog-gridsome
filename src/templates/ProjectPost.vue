@@ -5,29 +5,29 @@
       <div class="container">
 
         <div class="project-header">
-          <h1 class="project-title" v-html="$page.post.title" />
+          <h1 class="project-title"
+              v-html="$page.post.title" />
           <div class="project-info">
 
             <div class="categories-container">
               <div class="categories">
                 <span class="label">Categories</span>
-                <span 
-                  class="category"
-                  v-for="(category, index) in $page.post.categories" 
-                  :key="index"
-                  v-text="category"
-                />
+                <span class="category"
+                      v-for="(category, index) in $page.post.categories"
+                      :key="index"
+                      v-text="category.title" />
               </div>
             </div>
 
             <div class="year-container">
               <span class="label">Year</span>
-              <div v-html="$page.post.date"/>
+              <div v-html="$page.post.date" />
             </div>
           </div>
         </div>
 
-        <div v-html="$page.post.content" class="content" />
+        <div v-html="mdToHtml($page.post.content)"
+             class="content" />
 
       </div>
 
@@ -36,12 +36,14 @@
 </template>
 
 <page-query>
-query ProjectPost ($path: String!) {
-  post: projectPost (path: $path) {
+query strapiPost ($id: ID!) {
+  post: strapiPost (id: $id) {
     title
     date (format: "YYYY")
     content
-    categories
+    categories {
+          title
+    }
     project_bg_color
     project_fg_color
   }
@@ -57,7 +59,7 @@ export default {
         style: `background-color: ${this.$page.post.project_bg_color ? this.$page.post.project_bg_color : 'var(--color-base)'}; color: ${this.$page.post.project_fg_color ? this.$page.post.project_fg_color : 'var(--color-contrast)'}`
       }
     }
-  }
+  },
 }
 </script>
 
@@ -82,7 +84,7 @@ export default {
   margin: 0;
 }
 .category:after {
-  content: ', '
+  content: ', ';
 }
 .category:last-of-type:after {
   content: '';

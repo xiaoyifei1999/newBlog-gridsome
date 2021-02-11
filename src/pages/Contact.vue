@@ -7,25 +7,35 @@
         <p>Leave me a note with any questions you might have, I'll get back to you as soon as possible.</p>
       </div>
 
-      <form class="contact-form" name="contact">
+      <form class="contact-form"
+            name="contact">
 
         <div class="sender-info">
           <div>
-            <label for="name" class="label">Your name</label>
-            <input type="text" name="name" />
+            <label for="name"
+                   class="label">Your name</label>
+            <input type="text"
+                   v-model="form.name"
+                   name="name" />
           </div>
           <div>
-            <label for="email" class="label">Your email</label>
-            <input type="email" name="email" />
+            <label for="email"
+                   class="label">Your email</label>
+            <input type="email"
+                   v-model="form.email"
+                   name="email" />
           </div>
         </div>
 
         <div class="message">
-          <label for="message" class="label">Message</label>
-          <textarea name="message"></textarea>
+          <label for="message"
+                 class="label">Message</label>
+          <textarea name="message"
+                    v-model="form.message"></textarea>
         </div>
 
-        <button class="button">Submit form</button>
+        <button class="button"
+                @click.prevent="onSubmit">Submit form</button>
 
       </form>
 
@@ -34,7 +44,34 @@
 </template>
 
 <script>
-export default {}
+import axios from 'axios'
+
+export default {
+  data () {
+    return {
+      form: {
+        name: '',
+        email: '',
+        message: ''
+      }
+    }
+  },
+  methods: {
+    async onSubmit () {
+      try {
+        const { data } = await axios({
+          method: 'POST',
+          url: this.GRIDSOME_API_URL + "/concats",
+          data: this.form
+        })
+        window.alert('发送成功')
+      } catch (err) {
+        window.alert(err)
+      }
+
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -58,10 +95,12 @@ export default {}
 .sender-info > div:last-of-type {
   margin: 0;
 }
-input:focus,textarea:focus {
+input:focus,
+textarea:focus {
   border-color: var(--color-contrast-1);
 }
-input,textarea {
+input,
+textarea {
   background: transparent;
   border: 1px solid var(--color-base-1);
   outline: none;
